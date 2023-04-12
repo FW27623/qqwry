@@ -1,0 +1,22 @@
+name: Upload Releases
+
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Upload Releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.qqwry }}
+        run: |
+          RELEASE_ID=$(echo "${{ github.event.release.id }}" | sed 's/[^0-9]*//g')
+          curl -sSL -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/${{ github.repository }}/releases/${RELEASE_ID}" \
+            | jq -r '.assets[].browser_download_url' \
+            | xargs -n1 curl -sSL -H "Authorization: token $GITHUB_TOKEN" -o $(basename {})

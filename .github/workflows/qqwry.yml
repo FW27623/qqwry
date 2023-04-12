@@ -61,7 +61,7 @@ jobs:
           token: ${{ secrets.qqwry }}
 
       - name: Create Release
-        uses: FW27623/release-action@v1
+        uses: ncipollo/release-action@v1
         with:
           commit: ${{ env.GITHUB_SHA }}
           tag: ${{ steps.dat_date.outputs.dat_date }}

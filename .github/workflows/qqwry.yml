@@ -51,6 +51,14 @@ jobs:
           7z e -y $zip setup.exe
           ./innoextract setup.exe -I qqwry.dat
 
+      - name: Check if tag exists
+        run: |
+          git fetch --tags
+          if git rev-parse ${{ steps.dat_date.outputs.dat_date }} >/dev/null 2>&1; then
+            echo "Tag already exists, skipping create release"
+            exit 0
+          fi
+
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
@@ -59,3 +67,12 @@ jobs:
           token: ${{ secrets.qqwry }}
           artifacts: app/qqwry.dat
           body: ${{ steps.dat_date.outputs.dat_date }}
+      
+      - name: Upload qqwry.dat to repository root
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: app/qqwry.dat
+          asset_name: qqwry.dat
+          asset_content_type: application/octet-stream
+          token: ${{ secrets.qqwry }}

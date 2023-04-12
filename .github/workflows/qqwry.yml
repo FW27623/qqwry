@@ -61,10 +61,11 @@ jobs:
           token: ${{ secrets.qqwry }}
 
       - name: Delete existing assets with the same tag
-        uses: dawidd6/action-delete-releases@v3
+        uses: ncipollo/delete-releases-action@v2
         with:
           tag_name: ${{ steps.dat_date.outputs.dat_date }}
           access_token: ${{ secrets.qqwry }}
+        if: github.ref == 'refs/tags/${{ steps.dat_date.outputs.dat_date }}'
 
       - name: Create Release
         uses: ncipollo/release-action@v1

@@ -79,19 +79,3 @@ jobs:
            https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ steps.dat_date.outputs.dat_date }} | jq -r '.upload_url')
           echo "UPLOAD_URL=$UPLOAD_URL" >> $GITHUB_ENV
           echo "UPLOAD_URL=$UPLOAD_URL"
-
-#      - name: Manual upload
-#        run: |
-#          curl \
-#           -H "Authorization: token ${{ secrets.qqwry }}" \
-#           -H "Content-Type: application/octet-stream" \
-#           -F "data=@app/qqwry.dat" \
-#           "${{ env.UPLOAD_URL }}?name=qqwry.dat"
-      
-      - name: Upload qqwry.dat to repository root
-        uses: actions/upload-file@v1
-        with:
-          path: Downloads/qqwry.dat
-          repository: ${{ github.repository }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-        if: env.TAG_EXISTS != 'true'

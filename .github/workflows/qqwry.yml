@@ -5,7 +5,7 @@ on:
     - cron: '48 3,14 * * 3-5'
   push:
     branches:
-      - master
+      - main
 env:
   innoextract_version: 1.9
   arch: amd64

@@ -80,20 +80,18 @@ jobs:
           echo "UPLOAD_URL=$UPLOAD_URL" >> $GITHUB_ENV
           echo "UPLOAD_URL=$UPLOAD_URL"
 
-      - name: Manual upload
-        run: |
-          curl \
-           -H "Authorization: token ${{ secrets.qqwry }}" \
-           -H "Content-Type: application/octet-stream" \
-           -F "data=@app/qqwry.dat" \
-           "${{ env.UPLOAD_URL }}?name=qqwry.dat"
+#      - name: Manual upload
+#        run: |
+#          curl \
+#           -H "Authorization: token ${{ secrets.qqwry }}" \
+#           -H "Content-Type: application/octet-stream" \
+#           -F "data=@app/qqwry.dat" \
+#           "${{ env.UPLOAD_URL }}?name=qqwry.dat"
       
-#      - name: Upload qqwry.dat to repository root
-#        uses: actions/upload-release-asset@v1
-#        with:
-#          upload_url: ${{ env.UPLOAD_URL }}
-#          asset_path: app/qqwry.dat
-#          asset_name: qqwry.dat
-#          asset_content_type: application/octet-stream
-#          token: ${{ secrets.qqwry }}
-#        if: env.TAG_EXISTS == 'true'
+       - name: Upload qqwry.dat to repository root
+         uses: actions/upload-file@v1
+         with:
+           path: Downloads/qqwry.dat
+           repository: ${{ github.repository }}
+           token: ${{ secrets.GITHUB_TOKEN }}
+         if: env.TAG_EXISTS != 'true'

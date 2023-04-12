@@ -58,7 +58,8 @@ jobs:
           asset_path: app/qqwry.dat
           asset_name: qqwry.dat
           asset_content_type: application/octet-stream
-          token: ${{ secrets.qqwry }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.qqwry }}
 
       - name: Create Release
         uses: ncipollo/release-action@v1

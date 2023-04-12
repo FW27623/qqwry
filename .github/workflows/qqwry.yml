@@ -1,1 +1,57 @@
+name: qqwry
+on:
+  push:
+    branches:
+      - master
+env:
+  innoextract_version: 1.9
+  arch: amd64
 
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+          pip install bs4
+
+      - name: Get download link from WeChat tweet
+        run: |
+          echo "::set-output name=link::$(python qqwry.py)"
+
+      - name: Use link to download newest Zip
+        run: |
+          link=${{ steps.get_link.outputs.link }}
+          mkdir -p Downloads
+          cd Downloads
+          wget $link
+
+      - name: Download innoextract
+        run: |
+          wget https://github.com/dscharrer/innoextract/releases/download/${{ env.innoextract_version }}/innoextract-${{ env.innoextract_version }}-linux.tar.xz
+          tar -xvf innoextract-${{ env.innoextract_version }}-linux.tar.xz innoextract-${{ env.innoextract_version }}-linux/bin/${{ env.arch }}/innoextract --strip-components 3
+
+      - name: Get qqwry.dat
+        id: dat_date
+        shell: pwsh
+        run: |
+          $zip = (Get-ChildItem Downloads\*.zip)[0].FullName
+          $filename = (Get-ChildItem Downloads\*.zip)[0].Name
+          $name = $filename.Substring($filename.IndexOf('-') + 1 , $filename.length - $filename.IndexOf('-') - 5)
+          Write-Output "::set-output name=dat_date::$name"
+          7z e -y $zip setup.exe
+          ./innoextract setup.exe -I qqwry.dat
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          commit: ${{ env.GITHUB_SHA }}
+          tag: ${{ steps.dat_date.outputs.dat_date }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: app/qqwry.dat
+          body: ${{ steps.dat_date.outputs.dat_date }}

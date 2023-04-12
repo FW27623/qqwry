@@ -1,22 +1,22 @@
-name: Upload Releases
+name: Upload release files
 
 on:
-  workflow_dispatch:
   release:
     types: [created]
 
 jobs:
-  upload:
+  release:
+    name: Upload release files
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Upload Releases
-        env:
-          GITHUB_TOKEN: ${{ secrets.qqwry }}
-        run: |
-          RELEASE_ID=$(echo "${{ github.event.release.id }}" | sed 's/[^0-9]*//g')
-          curl -sSL -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/${{ github.repository }}/releases/${RELEASE_ID}" \
-            | jq -r '.assets[].browser_download_url' \
-            | xargs -n1 curl -sSL -H "Authorization: token $GITHUB_TOKEN" -o $(basename {})
+      - name: Upload release files
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-files
+          path: ${{ github.event.release.assets[0].name }}
+
+      - name: Move release files
+        run: mv ${{ github.workspace }}/${{ github.event.release.assets[0].name }} .

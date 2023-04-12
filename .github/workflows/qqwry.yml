@@ -51,6 +51,21 @@ jobs:
           7z e -y $zip setup.exe
           ./innoextract setup.exe -I qqwry.dat
 
+      - name: Upload qqwry.dat
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets{?name,label}
+          asset_path: qqwry.dat
+          asset_name: qqwry.dat
+          asset_content_type: application/octet-stream
+          token: ${{ secrets.qqwry }}
+
+      - name: Delete existing assets with the same tag
+        uses: dawidd6/action-delete-releases@v3
+        with:
+          tag_name: ${{ steps.dat_date.outputs.dat_date }}
+          access_token: ${{ secrets.qqwry }}
+
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:

@@ -50,6 +50,7 @@ jobs:
           Write-Output "::set-output name=dat_date::$name"
           7z e -y $zip setup.exe
           ./innoextract setup.exe -I qqwry.dat
+          cp qqwry.dat ../
 
       - name: Upload qqwry.dat
         uses: actions/upload-release-asset@v1

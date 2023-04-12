@@ -82,7 +82,7 @@ jobs:
       - name: Upload qqwry.dat to repository root
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ env.UPLOAD_URL }}
           asset_path: app/qqwry.dat
           asset_name: qqwry.dat
           asset_content_type: application/octet-stream

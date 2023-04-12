@@ -85,7 +85,7 @@ jobs:
           curl \
            -H "Authorization: token ${{ secrets.qqwry }}" \
            -H "Content-Type: application/octet-stream" \
-           --data-binary @app/qqwry.dat \
+           -F "data=@app/qqwry.dat" \
            "${{ env.UPLOAD_URL }}?name=qqwry.dat"
       
 #      - name: Upload qqwry.dat to repository root

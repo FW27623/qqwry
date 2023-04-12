@@ -70,6 +70,15 @@ jobs:
           artifacts: app/qqwry.dat
           body: ${{ steps.dat_date.outputs.dat_date }}
       
+      - name: Get upload URL for existing release
+        if: env.TAG_EXISTS == 'true'
+        run: |
+          UPLOAD_URL=$(curl \
+           -H "Accept: application/vnd.github+json" \
+           -H "Authorization: token ${{ secrets.qqwry }}" \
+           https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ steps.dat_date.outputs.dat_date }} | jq -r '.upload_url')
+        echo "UPLOAD_URL=$UPLOAD_URL" >> $GITHUB_ENV
+      
       - name: Upload qqwry.dat to repository root
         uses: actions/upload-release-asset@v1
         with:

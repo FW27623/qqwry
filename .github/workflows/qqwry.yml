@@ -1,5 +1,7 @@
 name: qqwry
 on:
+  schedule:
+    - cron: '18 3,7,8,14 * * 3-5'
   push:
     branches:
       - master

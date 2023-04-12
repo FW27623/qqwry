@@ -56,11 +56,13 @@ jobs:
           git fetch --tags
           if git rev-parse ${{ steps.dat_date.outputs.dat_date }} >/dev/null 2>&1; then
             echo "Tag already exists, skipping create release"
-            exit 0
+            env.TAG_EXISTS = 'true'
           fi
 
       - name: Create Release
+        id: create_release
         uses: ncipollo/release-action@v1
+        if: env.TAG_EXISTS != 'true'
         with:
           commit: ${{ env.GITHUB_SHA }}
           tag: ${{ steps.dat_date.outputs.dat_date }}
@@ -76,3 +78,4 @@ jobs:
           asset_name: qqwry.dat
           asset_content_type: application/octet-stream
           token: ${{ secrets.qqwry }}
+        if: env.TAG_EXISTS == 'true'

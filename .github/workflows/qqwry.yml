@@ -56,7 +56,7 @@ jobs:
           git fetch --tags
           if git rev-parse ${{ steps.dat_date.outputs.dat_date }} >/dev/null 2>&1; then
             echo "Tag already exists, skipping create release"
-            env.TAG_EXISTS = 'true'
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
           fi
 
       - name: Create Release

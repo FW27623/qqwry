@@ -50,13 +50,12 @@ jobs:
           Write-Output "::set-output name=dat_date::$name"
           7z e -y $zip setup.exe
           ./innoextract setup.exe -I qqwry.dat
-          cp qqwry.dat ../
 
       - name: Upload qqwry.dat
         uses: actions/upload-release-asset@v1
         with:
           upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets{?name,label}
-          asset_path: qqwry.dat
+          asset_path: app/qqwry.dat
           asset_name: qqwry.dat
           asset_content_type: application/octet-stream
           token: ${{ secrets.qqwry }}

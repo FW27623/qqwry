@@ -60,15 +60,8 @@ jobs:
           asset_content_type: application/octet-stream
           token: ${{ secrets.qqwry }}
 
-      - name: Delete existing assets with the same tag
-        uses: ncipollo/delete-releases-action@v2
-        with:
-          tag_name: ${{ steps.dat_date.outputs.dat_date }}
-          access_token: ${{ secrets.qqwry }}
-        if: github.ref == 'refs/tags/${{ steps.dat_date.outputs.dat_date }}'
-
       - name: Create Release
-        uses: ncipollo/release-action@v1
+        uses: FW27623/release-action@v1
         with:
           commit: ${{ env.GITHUB_SHA }}
           tag: ${{ steps.dat_date.outputs.dat_date }}

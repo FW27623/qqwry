@@ -9,6 +9,9 @@ on:
 env:
   innoextract_version: 1.9
   arch: amd64
+ 
+permissions:
+  contents: write
 
 jobs:
   release:

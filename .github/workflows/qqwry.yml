@@ -74,7 +74,7 @@ jobs:
           body: ${{ steps.dat_date.outputs.dat_date }}
 
       - name: Check for changes in qqwry.dat
-        id:check
+        id: check
         run: |
           if [ -n "$(git diff --name-only -- app/qqwry.dat)" ]; then
             echo "::set-output name=changed::true"

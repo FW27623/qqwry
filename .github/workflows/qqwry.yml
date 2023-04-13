@@ -72,8 +72,18 @@ jobs:
           token: ${{ secrets.qqwry }}
           artifacts: app/qqwry.dat
           body: ${{ steps.dat_date.outputs.dat_date }}
+
+      - name: Check for changes in qqwry.dat
+        id:check
+        run: |
+          if [ -n "$(git diff --name-only -- app/qqwry.dat)" ]; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
       
       - name: Commit qqwry.dat
+        if: steps.check.outputs.changed == 'true'        
         env:
          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}

@@ -70,12 +70,13 @@ jobs:
           artifacts: app/qqwry.dat
           body: ${{ steps.dat_date.outputs.dat_date }}
       
-      - name: Get upload URL for existing release
-        if: env.TAG_EXISTS == 'true'
+      - name: Commit qqwry.dat
+        env:
+         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+         GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
         run: |
-          UPLOAD_URL=$(curl \
-           -H "Accept: application/vnd.github+json" \
-           -H "Authorization: token ${{ secrets.qqwry }}" \
-           https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ steps.dat_date.outputs.dat_date }} | jq -r '.upload_url')
-          echo "UPLOAD_URL=$UPLOAD_URL" >> $GITHUB_ENV
-          echo "UPLOAD_URL=$UPLOAD_URL"
+         git config --global user.name $GIT_USERNAME
+         git config --global user.email $GIT_EMAIL
+         git add app/qqwry.dat
+         git commit -m "Update qqwry.dat in  ${{ steps.dat_date.outputs.dat_date }}"
+         git push

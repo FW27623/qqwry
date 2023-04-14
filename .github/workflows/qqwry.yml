@@ -6,6 +6,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
 env:
   innoextract_version: 1.9
   arch: amd64

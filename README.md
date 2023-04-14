@@ -30,7 +30,7 @@
 
 - 然后打开 Fork 的仓库，点击 `Settings` ，找到`Secrets and variables` ，点击 `Actions` ，增加一个名为 `qqwry` 的`Secrets` ，将刚刚生成的 `Token` 复制进去。
 
-  <p align=center><img src="README.assets/950cf56dd4cf8fe773721.png" style="zoom:50%;" /></pp>
+  <p align=center><img src="https://pic.1016.site/file/950cf56dd4cf8fe773721.png" style="zoom:50%;" /></p>
 
 - 然后再新建两个变量 `GIT_USERNAME` 和 `GIT_EMAIL`  ，这两个填你自己的就好了，然后保存，运行 Action ，不出意外的话你应该很快就能看到最新的IP库了。
 

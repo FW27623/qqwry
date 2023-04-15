@@ -52,7 +52,7 @@ jobs:
           $zip = (Get-ChildItem Downloads\*.zip)[0].FullName
           $filename = (Get-ChildItem Downloads\*.zip)[0].Name
           $name = $filename.Substring($filename.IndexOf('-') + 1 , $filename.length - $filename.IndexOf('-') - 5)
-          Write-Output "::set-output name=dat_date::$name"
+          echo "dat_date=$name" | Out-File -FilePath $env:GITHUB_ENV
           7z e -y $zip setup.exe
           ./innoextract setup.exe -I qqwry.dat
 
@@ -79,10 +79,13 @@ jobs:
           token: ${{ secrets.qqwry }}
           artifacts: app/qqwry.dat
           body: |
-           qqwry.dat:
-           Zip Download link: ${{ env.LINK }}
-           File hash: qqwry.dat: ${{ env.hash }}
-           
+           #### qqwry.dat
+
+           | Name               | Value                      |
+           | :----------------- | -------------------------- |
+           | Zip Download link: | ${{ env.LINK }}            |
+           | File hash:         | qqwry.dat: ${{ env.hash }} |
+
            <p align="right"><code>Version: ${{ steps.dat_date.outputs.dat_date }}</code></p>
 
       - name: Check for changes in qqwry.dat

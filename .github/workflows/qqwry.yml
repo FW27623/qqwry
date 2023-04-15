@@ -59,6 +59,7 @@ jobs:
       - name: Check if tag exists
         run: |
           git fetch --tags
+          echo "Value of dat_date: ${{ steps.dat_date.outputs.dat_date }}"
           if git rev-parse ${{ steps.dat_date.outputs.dat_date }} >/dev/null 2>&1; then
             echo "Tag already exists, skipping create release"
             echo "TAG_EXISTS=true" >> $GITHUB_ENV

@@ -86,7 +86,7 @@ jobs:
            | Zip Download link: | ${{ env.LINK }}            |
            | File hash:         | qqwry.dat: ${{ env.hash }} |
 
-           <p align="right"><code>Version: ${{ steps.dat_date.outputs.dat_date }}</code></p>
+           <p align="right"><code>Version: ${{ steps.dat_date.outputs.dat_date }} </code></p>
 
       - name: Check for changes in qqwry.dat
         id: check

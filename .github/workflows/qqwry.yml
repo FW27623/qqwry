@@ -92,15 +92,16 @@ jobs:
       - name: Check for changes in qqwry.dat
         id: check
         run: |
-          if [ -n "$(git diff --name-only -- app/qqwry.dat)" ]; then
-            echo "changed=true" >> $GITHUB_ENV
+          if [ -f "app/qqwry.dat" ]; then
+           if [ -n "$(git diff --name-only -- app/qqwry.dat)" ]; then
+             echo "changed=true" >> $GITHUB_ENV
+           else
+             echo "changed=false" >> $GITHUB_ENV
+           fi
           else
-            echo "changed=false" >> $GITHUB_ENV
+            echo "File does not exist"
+            echo "changed=true" >> $GITHUB_ENV
           fi
-        else
-          echo "File does not exist"
-          echo "changed=true" >> $GITHUB_ENV
-        fi
       
       - name: Commit qqwry.dat
         if: steps.check.outputs.changed == 'true'        

@@ -65,7 +65,7 @@ jobs:
           fi
 
       - name: Calculate file hash value
-        id: calc_hash
+        id: calculate_hash_value
         run: |
           echo "hash=$(sha256sum app/qqwry.dat | awk '{ print $1 }')" >> $GITHUB_ENV
       

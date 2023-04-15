@@ -83,7 +83,7 @@ jobs:
            #### qqwry.dat
 
            | Name               | Value                      |
-           | :----------------- | -------------------------- |
+           | :----------------: | :------------------------: |
            | Zip Download link: | ${{ env.LINK }}            |
            | File hash:         | qqwry.dat: ${{ env.hash }} |
 

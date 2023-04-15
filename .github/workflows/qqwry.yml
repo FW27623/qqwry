@@ -105,7 +105,7 @@ jobs:
           fi
       
       - name: Commit qqwry.dat
-        if: steps.check.outputs.changed == 'true'        
+        if: env.RUN_NEXT_STEP == 'true'        
         env:
          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}

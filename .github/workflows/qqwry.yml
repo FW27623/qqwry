@@ -100,7 +100,7 @@ jobs:
            fi
           else
             echo "File does not exist"
-            echo "changed=false" >> $GITHUB_ENV
+            echo "changed=true" >> $GITHUB_ENV
           fi
       
       - name: Commit qqwry.dat

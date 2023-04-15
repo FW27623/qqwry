@@ -59,8 +59,8 @@ jobs:
       - name: Check if tag exists
         run: |
           git fetch --tags
-          echo "Value of dat_date: ${{ env:dat_date }}"
-          if git rev-parse ${{ env:dat_date }} >/dev/null 2>&1; then
+          echo "Value of dat_date: $env:dat_date"
+          if git rev-parse $env:dat_date >/dev/null 2>&1; then
             echo "Tag already exists, skipping create release"
             echo "TAG_EXISTS=true" >> $GITHUB_ENV
           fi
@@ -76,7 +76,7 @@ jobs:
         if: env.TAG_EXISTS != 'true'
         with:
           commit: ${{ env.GITHUB_SHA }}
-          tag: ${{ env:dat_date }}
+          tag: $env:dat_date
           token: ${{ secrets.qqwry }}
           artifacts: app/qqwry.dat
           body: |
@@ -87,7 +87,7 @@ jobs:
            | Zip Download link: | ${{ env.LINK }}            |
            | File hash:         | qqwry.dat: ${{ env.hash }} |
 
-           <p align="right"><code>Version: ${{ env:dat_date }} </code></p>
+           <p align="right"><code>Version: $env:dat_date </code></p>
 
       - name: Check for changes in qqwry.dat
         id: check
@@ -107,5 +107,5 @@ jobs:
          git config --global user.name $GIT_USERNAME
          git config --global user.email $GIT_EMAIL
          git add app/qqwry.dat
-         git commit -m "Update qqwry.dat in  ${{ env:dat_date }}"
+         git commit -m "Update qqwry.dat in  $env:dat_date"
          git push

@@ -1,7 +1,7 @@
 # qqwry.dat
 **纯真IP数据库，使用 Github Action 定时更新最新版本，每天会扫描两次（17:55和23:55），如果不出意外的话应该能够正常更新。**
 
-**最近花了不少时间在这上面。有帮助到的可以点点 [Star⭐](https://github.com/FW27623/qqwry/star)支持下。**
+**最近花了不少时间在这上面。有帮助到的可以点点 [Star⭐](https://github.com/FW27623/qqwry#stargazers)支持下。**
 
 # 目录说明
  1、[app](https://github.com/FW27623/qqwry/tree/main/app) 目录下为最新数据，每次更新会覆盖其中的内容，如果想要历史数据可在 [Release](https://github.com/FW27623/qqwry/releases) 里查看。

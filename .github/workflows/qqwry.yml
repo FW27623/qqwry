@@ -96,7 +96,7 @@ jobs:
            echo "File does not exist"
            echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           else
-            LAST_COMMIT=$(git log -1 --format=format:%H --full-diff app/qqwry.dat)
+            LAST_COMMIT=$(git log --all --format=format:%H --full-diff app/qqwry.dat)
             CURRENT_COMMIT=$(git rev-parse HEAD)
             if [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
               echo "File has changed"

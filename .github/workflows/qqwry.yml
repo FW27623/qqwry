@@ -110,12 +110,7 @@ jobs:
            echo "File does not exist"
            echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           else
-            LAST_COMMIT=$(git log --all --format=format:%H --full-diff app/qqwry.dat)
-            CURRENT_COMMIT=$(git rev-parse HEAD)
-            if [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
-              echo "File has changed"
-              echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
-            fi
+            git diff --quiet HEAD app/qqwry.dat || echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           fi
       
       - name: Commit qqwry.dat

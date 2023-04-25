@@ -4,7 +4,7 @@
 **最近花了不少时间在这上面。有帮助到的可以点点 [Star⭐](https://github.com/FW27623/qqwry#stargazers)支持下。**
 
 # 目录说明
- 1、[app](https://github.com/FW27623/qqwry/tree/main/app) 目录下为最新数据，每次更新会覆盖其中的内容，如果想要历史数据可在 [Release](https://github.com/FW27623/qqwry/releases) 里查看。
+ 1、[qqwry.dat](https://github.com/FW27623/qqwry/blob/main/qqwry.dat) 为最新数据，每次更新会覆盖其中的内容，如果想要历史数据可在 [Release](https://github.com/FW27623/qqwry/releases) 里查看。
 
  2、`qqwry.py` 文件用于获取最新微信公众号推文内发布的免费IP库的zip更新链接  
 

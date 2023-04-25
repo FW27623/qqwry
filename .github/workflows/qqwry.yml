@@ -118,7 +118,8 @@ jobs:
            echo "File does not exist"
            echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           else
-            git diff --quiet HEAD app/qqwry.dat || echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
+            mv app/qqwry.dat ../qqwry.dat
+            git diff --quiet HEAD ../qqwry.dat || echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           fi
       
       - name: Commit qqwry.dat
@@ -129,7 +130,6 @@ jobs:
         run: |
          git config --global user.name $GIT_USERNAME
          git config --global user.email $GIT_EMAIL
-         mv app/qqwry.dat ../qqwry.dat
          git add -f ../qqwry.dat
          if [ $? -eq 0 ]; then
            git commit -m "Update qqwry.dat in  ${{ env.dat_date }}"

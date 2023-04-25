@@ -131,14 +131,17 @@ jobs:
       - name: Commit qqwry.dat
         if: env.RUN_NEXT_STEP == 'true'        
         env:
-         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-         GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
         run: |
-         git config --global user.name $GIT_USERNAME
-         git config --global user.email $GIT_EMAIL
-         if ! git status -s | grep qqwry.dat; then
-           git add qqwry.dat
-           git commit -m "Update qqwry.dat in  ${{ env.dat_date }}"
-           git push
-           git config --global --list
-         fi
+          git config --global user.name $GIT_USERNAME
+          git config --global user.email $GIT_EMAIL
+          if ! git status -s | grep qqwry.dat; then
+            git add qqwry.dat
+            git commit -m "Update qqwry.dat in  ${{ env.dat_date }}"
+            git push
+          fi
+
+      - name: Check Git Config
+        run: |
+          git config --global --list

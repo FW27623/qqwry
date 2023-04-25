@@ -75,6 +75,9 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
       - name: Check if tag exists
         run: |
           git fetch --tags
@@ -113,6 +116,9 @@ jobs:
     name: Commit qqwry.dat
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
       - name: Check for changes in qqwry.dat
         id: check
         run: |

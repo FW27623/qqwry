@@ -74,6 +74,7 @@ jobs:
     needs: get_data
     name: Create Release
     runs-on: ubuntu-latest
+    steps:
       - name: Check if tag exists
         run: |
           git fetch --tags
@@ -111,6 +112,7 @@ jobs:
     needs: get_data
     name: Commit qqwry.dat
     runs-on: ubuntu-latest
+    steps:
       - name: Check for changes in qqwry.dat
         id: check
         run: |

@@ -16,7 +16,7 @@ permissions:
   contents: write
 
 jobs:
-  get_data:
+  Get_data:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

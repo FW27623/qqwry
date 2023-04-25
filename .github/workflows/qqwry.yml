@@ -46,24 +46,13 @@ jobs:
         run: |
           link=$(python qqwry.py)
           echo "LINK=${link}" >> $GITHUB_ENV
-
-      - name: Cache downloaded file
-        uses: actions/cache@v3
-        id: cache-file
-        with:
-          path: Downloads
-          key: ${{ runner.os }}-downloaded-file
       
       - name: Use link to download newest Zip
         run: |
           link=${{ env.LINK }}
           mkdir -p Downloads
           cd Downloads
-          if [ -d $HOME/.cache/Downloads ]; then
-            cp -r $HOME/.cache/Downloads/* .
-          else
-            wget $link
-          fi
+          wget $link
 
       - name: Cache innoextract
         uses: actions/cache@v3
@@ -151,4 +140,5 @@ jobs:
            git add qqwry.dat
            git commit -m "Update qqwry.dat in  ${{ env.dat_date }}"
            git push
+           git config --global --list
          fi

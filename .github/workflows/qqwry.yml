@@ -47,6 +47,13 @@ jobs:
           link=$(python qqwry.py)
           echo "LINK=${link}" >> $GITHUB_ENV
 
+      - name: Cache downloaded file
+        uses: actions/cache@v2
+        id: cache-file
+        with:
+          path: Downloads
+          key: ${{ runner.os }}-downloaded-file
+      
       - name: Use link to download newest Zip
         run: |
           link=${{ env.LINK }}

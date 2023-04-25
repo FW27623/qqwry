@@ -28,7 +28,8 @@ jobs:
         with:
           python-version: '3.11'
       
-      - uses: actions/cache@v3
+      - name: Caching dependencies
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}

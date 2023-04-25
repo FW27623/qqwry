@@ -117,12 +117,15 @@ jobs:
           if [ ! -f app/qqwry.dat ]; then
             echo "File does not exist"
             echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
-            mv app/qqwry.dat qqwry.dat
-            git add qqwry.dat
+            mv app/qqwry.dat qqwry.dat           
           else
-            mv app/qqwry.dat qqwry.dat
-            git diff --quiet HEAD qqwry.dat || echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
-            git add qqwry.dat
+            LAST_COMMIT=$(git log --all --format=format:%H --full-diff app/qqwry.dat)
+            CURRENT_COMMIT=$(git rev-parse HEAD)
+            if [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
+              echo "File has changed"
+              echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
+              mv app/qqwry.dat qqwry.dat
+            fi
           fi
       
       - name: Commit qqwry.dat
@@ -133,5 +136,6 @@ jobs:
         run: |
          git config --global user.name $GIT_USERNAME
          git config --global user.email $GIT_EMAIL
+         git add qqwry.dat
          git commit -m "Update qqwry.dat in  ${{ env.dat_date }}"
          git push

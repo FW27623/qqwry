@@ -16,7 +16,7 @@ permissions:
   contents: write
 
 jobs:
-  Get_data:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -26,7 +26,7 @@ jobs:
         id: setup-python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11.3'
+          python-version: '3.11'
       
       - name: Caching dependencies
         uses: actions/cache@v3
@@ -69,15 +69,7 @@ jobs:
           echo "dat_date=$name" | Out-File -FilePath $env:GITHUB_ENV
           7z e -y $zip setup.exe
           ./innoextract setup.exe -I qqwry.dat
-  
-  release:
-    needs: get_data
-    name: Create Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
+
       - name: Check if tag exists
         run: |
           git fetch --tags
@@ -111,14 +103,6 @@ jobs:
 
            <p align="right"><code>Version: ${{ env.dat_date }} </code></p>
 
-  commit:
-    needs: get_data
-    name: Commit qqwry.dat
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
       - name: Check for changes in qqwry.dat
         id: check
         run: |

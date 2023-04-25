@@ -126,6 +126,10 @@ jobs:
         run: |
          git config --global user.name $GIT_USERNAME
          git config --global user.email $GIT_EMAIL
-           git add -f app/qqwry.dat
+         git add -f app/qqwry.dat
+         if [ $? -eq 0 ]; then
            git commit -m "Update qqwry.dat in  ${{ env.dat_date }}"
            git push
+         else
+           echo "Skipping commit and push as no changes were added"
+         fi

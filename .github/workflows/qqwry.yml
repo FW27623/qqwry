@@ -54,7 +54,15 @@ jobs:
           cd Downloads
           wget $link
 
+      - name: Cache innoextract
+        uses: actions/cache@v3
+        id: cache-innoextract
+        with:
+          path: innoextract
+          key: ${{ runner.os }}-innoextract-${{ env.innoextract_version }}
+      
       - name: Download innoextract
+        if: steps.cache-innoextract.outputs.cache-hit != 'true'
         run: |
           wget https://github.com/dscharrer/innoextract/releases/download/${{ env.innoextract_version }}/innoextract-${{ env.innoextract_version }}-linux.tar.xz
           tar -xvf innoextract-${{ env.innoextract_version }}-linux.tar.xz innoextract-${{ env.innoextract_version }}-linux/bin/${{ env.arch }}/innoextract --strip-components 3

@@ -48,7 +48,7 @@ jobs:
           echo "LINK=${link}" >> $GITHUB_ENV
 
       - name: Cache downloaded file
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache-file
         with:
           path: Downloads

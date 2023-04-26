@@ -33,12 +33,11 @@ jobs:
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
+          restore-keys: | 
             ${{ runner.os }}-pip-
       
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install requests
           pip install bs4
       
@@ -114,11 +113,11 @@ jobs:
       - name: Check for changes in qqwry.dat
         id: check
         run: |
-          if [ ! -f app/qqwry.dat ]; then
+          if [ ! -f qqwry.dat ]; then
             echo "File does not exist"
             echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           else
-            LAST_COMMIT=$(git log --all --format=format:%H --full-diff app/qqwry.dat | head -1)
+            LAST_COMMIT=$(git log --all --format=format:%H --follow qqwry.dat | head -1)
             CURRENT_COMMIT=$(git rev-parse HEAD)
             if [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
               echo "File has changed"

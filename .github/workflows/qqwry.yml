@@ -93,7 +93,7 @@ jobs:
       
       - name: Create Release
         id: create_release
-        uses: ncipollo/release-action@v1
+        uses: FW27623/release@v1
         if: env.TAG_EXISTS != 'true'
         with:
           commit: ${{ env.GITHUB_SHA }}

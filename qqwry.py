@@ -20,6 +20,9 @@ link = soup.find('li', {'class': 'album__list-item js_album_item js_wx_tap_highl
 =======
 link = soup.find('li', {'class': 'album__list-item'}).get('data-link')
 print(soup)
+<<<<<<< HEAD
+>>>>>>> parent of b67b5e5 (test)
+=======
 >>>>>>> parent of b67b5e5 (test)
 #访问微信推文链接
 response = requests.get(link)

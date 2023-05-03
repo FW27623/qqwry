@@ -43,7 +43,9 @@ jobs:
       
       - name: Get download link from WeChat tweet
         run: |
-          link=$(python qqwry.py)
+          python -V
+          pip freeze
+          link=$(python -u qqwry.py)
           echo "Link: ${link}"
           echo "LINK=${link}" >> $GITHUB_ENV
       

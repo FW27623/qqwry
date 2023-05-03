@@ -89,7 +89,10 @@ jobs:
       - name: Calculate file hash value
         id: calculate_hash_value
         run: |
-          echo "hash=$(sha256sum app/qqwry.dat | awk '{ print $1 }')" >> $GITHUB_ENV
+          HASH_VALUE=$(sha256sum app/qqwry.dat | awk '{ print $1 }')
+          echo "File hash value: $HASH_VALUE"
+          echo "hash=$HASH_VALUE" >> $GITHUB_ENV
+
       
       - name: Create Release
         id: create_release
@@ -113,7 +116,9 @@ jobs:
       - name: Calculate repository hash value
         id: calculate_repo_hash_value
         run: |
-          echo "hash=$(git show main:qqwry.dat | sha256sum | awk '{ print $1 }')" >> $GITHUB_ENV
+          HASH_VALUE=$(git show main:qqwry.dat | sha256sum | awk '{ print $1 }')
+          echo "Repository hash value: $HASH_VALUE"
+          echo "hash=$HASH_VALUE" >> $GITHUB_ENV
 
       - name: Check for changes in qqwry.dat
         id: check

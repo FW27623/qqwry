@@ -26,7 +26,7 @@ jobs:
         id: setup-python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       
       - name: Caching dependencies
         uses: actions/cache@v3
@@ -43,10 +43,7 @@ jobs:
       
       - name: Get download link from WeChat tweet
         run: |
-          python -V
-          pip freeze
-          link=$(python -u qqwry.py)
-          echo "Link: ${link}"
+          link=$(python qqwry.py)
           echo "LINK=${link}" >> $GITHUB_ENV
       
       - name: Use link to download newest Zip
@@ -54,8 +51,7 @@ jobs:
           link=${{ env.LINK }}
           mkdir -p Downloads
           cd Downloads
-          wget --no-check-certificate --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" $link
-
+          wget $link
       - name: Cache innoextract
         uses: actions/cache@v3
         id: cache-innoextract
@@ -68,7 +64,6 @@ jobs:
         run: |
           wget https://github.com/dscharrer/innoextract/releases/download/${{ env.innoextract_version }}/innoextract-${{ env.innoextract_version }}-linux.tar.xz
           tar -xvf innoextract-${{ env.innoextract_version }}-linux.tar.xz innoextract-${{ env.innoextract_version }}-linux/bin/${{ env.arch }}/innoextract --strip-components 3
-
       - name: Get qqwry.dat
         id: dat_date
         shell: pwsh
@@ -79,7 +74,6 @@ jobs:
           echo "dat_date=$name" | Out-File -FilePath $env:GITHUB_ENV
           7z e -y $zip setup.exe
           ./innoextract setup.exe -I qqwry.dat
-
       - name: Check if tag exists
         run: |
           git fetch --tags
@@ -88,14 +82,10 @@ jobs:
             echo "Tag already exists, skipping create release"
             echo "TAG_EXISTS=true" >> $GITHUB_ENV
           fi
-
       - name: Calculate file hash value
         id: calculate_hash_value
         run: |
-          HASH_VALUE=$(sha256sum app/qqwry.dat | awk '{ print $1 }')
-          echo "File hash value: $HASH_VALUE"
-          echo "hash=$HASH_VALUE" >> $GITHUB_ENV
-
+          echo "hash=$(sha256sum app/qqwry.dat | awk '{ print $1 }')" >> $GITHUB_ENV
       
       - name: Create Release
         id: create_release
@@ -108,21 +98,11 @@ jobs:
           artifacts: app/qqwry.dat
           body: |
            #### qqwry.dat
-
            | Name               | Value                      |
            | :----------------: | :------------------------: |
            | Zip Download link: | ${{ env.LINK }}            |
            | File hash:         | qqwry.dat: ${{ env.hash }} |
-
            <p align="right"><code>Version: ${{ env.dat_date }} </code></p>
-
-      - name: Calculate repository hash value
-        id: calculate_repo_hash_value
-        run: |
-          HASH_VALUE=$(git show main:qqwry.dat | sha256sum | awk '{ print $1 }')
-          echo "Repository hash value: $HASH_VALUE"
-          echo "hash=$HASH_VALUE" >> $GITHUB_ENV
-
       - name: Check for changes in qqwry.dat
         id: check
         run: |
@@ -130,14 +110,13 @@ jobs:
             echo "File does not exist"
             echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           else
-            #比较上面的两个hash值是否相等
-            if [ "${{ steps.calculate_hash_value.outputs.hash }}" != "${{ steps.calculate_repo_hash_value.outputs.hash }}" ]; then
+            LAST_COMMIT=$(git log --all --format=format:%H --follow qqwry.dat | head -1)
+            CURRENT_COMMIT=$(git rev-parse HEAD)
+            if [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
               echo "File has changed"
-            else
-              echo "File has not changed"
+              echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
             fi
           fi
-
       - name: Commit qqwry.dat
         if: env.RUN_NEXT_STEP == 'true'
         env:

@@ -8,11 +8,8 @@ headers = {
 
 url = 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg3Mzc0NTA3NA==&action=getalbum&album_id=2329805780276838401#wechat_redirect'
 
-response = requests.get(url)
+response = requests.get(url, headers=headers)
 soup = BeautifulSoup(response.text, 'html.parser')
-print(response.text)
-print(f"Status code: {response.status_code}")
-print(f"Response headers: {response.headers}")
 link = soup.find('li', {'class': 'album__list-item'}).get('data-link')
 #访问微信推文链接
 response = requests.get(link)

@@ -125,6 +125,7 @@ jobs:
             #比较上面的两个hash值是否相等
             if [ "${{ env.FILE_HASH }}" != "${{ env.REPO_HASH }}" ]; then
               echo "File has changed"
+              echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
             else
               echo "File has not changed"
             fi

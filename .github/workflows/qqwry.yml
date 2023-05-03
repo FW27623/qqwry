@@ -110,6 +110,11 @@ jobs:
 
            <p align="right"><code>Version: ${{ env.dat_date }} </code></p>
 
+      - name: Calculate repository hash value
+        id: calculate_repo_hash_value
+        run: |
+          echo "hash=$(git show main:qqwry.dat | sha256sum | awk '{ print $1 }')" >> $GITHUB_ENV
+
       - name: Check for changes in qqwry.dat
         id: check
         run: |
@@ -117,11 +122,11 @@ jobs:
             echo "File does not exist"
             echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           else
-            LAST_COMMIT=$(git log --all --format=format:%H --follow qqwry.dat | head -1)
-            CURRENT_COMMIT=$(git rev-parse HEAD)
-            if [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
+            #比较上面的两个hash值是否相等
+            if [ "${{ steps.calculate_hash_value.outputs.hash }}" != "${{ steps.calculate_repo_hash_value.outputs.hash }}" ]; then
               echo "File has changed"
-              echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
+            else
+              echo "File has not changed"
             fi
           fi
 

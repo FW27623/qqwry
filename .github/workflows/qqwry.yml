@@ -89,7 +89,7 @@ jobs:
       - name: Calculate file hash value
         id: calculate_hash_value
         run: |
-          echo "hash=$(sha256sum app/qqwry.dat | awk '{ print $1 }')" >> $GITHUB_ENV
+          echo "FILE_HASH=$(sha256sum app/qqwry.dat | awk '{ print $1 }')" >> $GITHUB_ENV
       
       - name: Create Release
         id: create_release
@@ -113,7 +113,7 @@ jobs:
       - name: Calculate repository hash value
         id: calculate_repo_hash_value
         run: |
-          echo "hash=$(git show main:qqwry.dat | sha256sum | awk '{ print $1 }')" >> $GITHUB_ENV
+          echo "REPO_HASH=$(git show main:qqwry.dat | sha256sum | awk '{ print $1 }')" >> $GITHUB_ENV
 
       - name: Check for changes in qqwry.dat
         id: check
@@ -123,7 +123,7 @@ jobs:
             echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           else
             #比较上面的两个hash值是否相等
-            if [ "${{ steps.calculate_hash_value.outputs.hash }}" != "${{ steps.calculate_repo_hash_value.outputs.hash }}" ]; then
+            if [ "${{ env.FILE_HASH }}" != "${{ env.REPO_HASH }}" ]; then
               echo "File has changed"
             else
               echo "File has not changed"

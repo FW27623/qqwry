@@ -18,7 +18,7 @@
 - `workflow` 中增加定时运行和手动运行操作
 - 使用 `requests` 和 `bs4` 库以使用 `qqwry.py` 来自动获取微信公众号推文发布的免费IP库的zip更新链接
 - 增加 `workflow` 对已有同名 [Release](https://github.com/FW27623/qqwry/releases) 的处理
-- 增加对 `workflow` 中解包完成的 `qqwy.dat` 进行Git 操作，默认上传至 [app](https://github.com/FW27623/qqwry/tree/main/app) 目录下
+- 增加对 `workflow` 中解包完成的 `qqwy.dat` 进行Git 操作，默认上传至根目录下。将检测文件是否更改的代码更改为检测哈希值是否一致。
 
 # 如何使用
 

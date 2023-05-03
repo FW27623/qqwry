@@ -44,7 +44,9 @@ jobs:
       - name: Get download link from WeChat tweet
         run: |
           link=$(python qqwry.py)
+          echo "LINK=${link}": ${LINK}
           echo "LINK=${link}" >> $GITHUB_ENV
+
       
       - name: Use link to download newest Zip
         run: |

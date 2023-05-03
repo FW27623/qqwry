@@ -51,7 +51,8 @@ jobs:
           link=${{ env.LINK }}
           mkdir -p Downloads
           cd Downloads
-          wget $link
+          wget --no-check-certificate --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" $link
+
       - name: Cache innoextract
         uses: actions/cache@v3
         id: cache-innoextract
@@ -64,6 +65,7 @@ jobs:
         run: |
           wget https://github.com/dscharrer/innoextract/releases/download/${{ env.innoextract_version }}/innoextract-${{ env.innoextract_version }}-linux.tar.xz
           tar -xvf innoextract-${{ env.innoextract_version }}-linux.tar.xz innoextract-${{ env.innoextract_version }}-linux/bin/${{ env.arch }}/innoextract --strip-components 3
+
       - name: Get qqwry.dat
         id: dat_date
         shell: pwsh
@@ -74,6 +76,7 @@ jobs:
           echo "dat_date=$name" | Out-File -FilePath $env:GITHUB_ENV
           7z e -y $zip setup.exe
           ./innoextract setup.exe -I qqwry.dat
+
       - name: Check if tag exists
         run: |
           git fetch --tags
@@ -82,6 +85,7 @@ jobs:
             echo "Tag already exists, skipping create release"
             echo "TAG_EXISTS=true" >> $GITHUB_ENV
           fi
+
       - name: Calculate file hash value
         id: calculate_hash_value
         run: |
@@ -98,11 +102,19 @@ jobs:
           artifacts: app/qqwry.dat
           body: |
            #### qqwry.dat
+
            | Name               | Value                      |
            | :----------------: | :------------------------: |
            | Zip Download link: | ${{ env.LINK }}            |
            | File hash:         | qqwry.dat: ${{ env.hash }} |
+
            <p align="right"><code>Version: ${{ env.dat_date }} </code></p>
+
+      - name: Calculate repository hash value
+        id: calculate_repo_hash_value
+        run: |
+          echo "hash=$(git show main:qqwry.dat | sha256sum | awk '{ print $1 }')" >> $GITHUB_ENV
+
       - name: Check for changes in qqwry.dat
         id: check
         run: |
@@ -110,13 +122,14 @@ jobs:
             echo "File does not exist"
             echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
           else
-            LAST_COMMIT=$(git log --all --format=format:%H --follow qqwry.dat | head -1)
-            CURRENT_COMMIT=$(git rev-parse HEAD)
-            if [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
+            #比较上面的两个hash值是否相等
+            if [ "${{ steps.calculate_hash_value.outputs.hash }}" != "${{ steps.calculate_repo_hash_value.outputs.hash }}" ]; then
               echo "File has changed"
-              echo "RUN_NEXT_STEP=true" >> $GITHUB_ENV
+            else
+              echo "File has not changed"
             fi
           fi
+
       - name: Commit qqwry.dat
         if: env.RUN_NEXT_STEP == 'true'
         env:

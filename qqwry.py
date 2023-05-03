@@ -14,16 +14,8 @@ url = 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg3Mzc0NTA3NA==&action=get
 response = requests.get(url, headers=headers)
 #解析网页
 soup = BeautifulSoup(response.text, 'html.parser')
-<<<<<<< HEAD
 #提取微信推文链接
 link = soup.find('li', {'class': 'album__list-item js_album_item js_wx_tap_highlight wx_tap_cell'}).get('data-link')
-=======
-link = soup.find('li', {'class': 'album__list-item'}).get('data-link')
-print(soup)
-<<<<<<< HEAD
->>>>>>> parent of b67b5e5 (test)
-=======
->>>>>>> parent of b67b5e5 (test)
 #访问微信推文链接
 response = requests.get(link)
 soup = BeautifulSoup(response.text, 'html.parser')

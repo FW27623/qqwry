@@ -11,6 +11,7 @@ url = 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg3Mzc0NTA3NA==&action=get
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 link = soup.find('li', {'class': 'album__list-item'}).get('data-link')
+print(soup)
 #访问微信推文链接
 response = requests.get(link)
 soup = BeautifulSoup(response.text, 'html.parser')

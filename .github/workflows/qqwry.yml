@@ -106,7 +106,7 @@ jobs:
            | Name               | Value                      |
            | :----------------: | :------------------------: |
            | Zip Download link: | ${{ env.LINK }}            |
-           | File hash:         | qqwry.dat: ${{ env.hash }} |
+           | File hash:         | qqwry.dat: ${{ env.FILE_HASH }} |
 
            <p align="right"><code>Version: ${{ env.dat_date }} </code></p>
 

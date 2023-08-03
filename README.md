@@ -1,12 +1,12 @@
 # qqwry.dat [![qqwry](https://github.com/FW27623/qqwry/actions/workflows/qqwry.yml/badge.svg)](https://github.com/FW27623/qqwry/actions/workflows/qqwry.yml)
-**纯真IP数据库，使用 Github Action 定时更新最新版本，每天会扫描两次（17:55和23:55），如果不出意外的话应该能够正常更新。**
+**纯真IP数据库，使用 Github Action 定时更新最新版本，每天会扫描两次（17:55和23:55），也可以选择手动运行。**
 
-**最近花了不少时间在这上面。有帮助到的可以点点 [Star⭐](https://github.com/FW27623/qqwry#stargazers)支持下。**
+**本仓库如果有帮助到您的话可以点点 [Star⭐](https://github.com/FW27623/qqwry#stargazers)支持下。**
 
 # 目录说明
- 1、[`qqwry.dat` ](https://github.com/FW27623/qqwry/blob/main/qqwry.dat) 为最新数据，每次更新会覆盖其中的内容，如果想要历史数据可在 [`Release` ](https://github.com/FW27623/qqwry/releases) 里查看。
+ 1、[`qqwry.dat` ](https://github.com/FW27623/qqwry/blob/main/qqwry.dat) 为最新数据，每次更新会覆盖其中的内容，如果想要某个时间段的历史数据可在 [`Release` ](https://github.com/FW27623/qqwry/releases) 里查看。
 
- 2、`qqwry.py` 文件用于获取最新微信公众号推文内发布的免费IP库的zip更新链接  
+ 2、`qqwry.py` 文件用于获取“纯真IP实验室”最新微信公众号推文内发布的免费IP库的zip更新链接  
 
 # 鸣谢
 -  借鉴 [HMBSbige](https://github.com/HMBSbige)/[qqwry](https://github.com/HMBSbige/qqwry) 的 `workflow` 写法

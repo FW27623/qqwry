@@ -1,4 +1,5 @@
 import re
+import json
 import requests
 from bs4 import BeautifulSoup
 
@@ -10,13 +11,10 @@ def get_link(url):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
     }
 
-    # 访问链接并解析网页
+    # 访问链接并从json中提取微信推文链接
     response = requests.get(url, headers=headers)
-    soup = BeautifulSoup(response.text, 'html.parser')
-
-    # 提取微信推文链接
-    link = soup.find('li', {'class': 'album__list-item js_album_item js_wx_tap_highlight wx_tap_cell'}).get('data-link')
-
+    data = json.loads(response.text)
+    link = data['getalbum_resp']['article_list'][0]['url']
     return link
 
 def get_zip_url(link):
@@ -32,7 +30,7 @@ def get_zip_url(link):
 
 if __name__ == '__main__':
     # 微信推文链接
-    url = 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg3Mzc0NTA3NA==&action=getalbum&album_id=2329805780276838401#wechat_redirect'
+    url = 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg3Mzc0NTA3NA==&action=getalbum&album_id=2329805780276838401&f=json'
 
     try:
         link = get_link(url)

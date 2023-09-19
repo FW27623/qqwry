@@ -50,12 +50,21 @@ jobs:
           fi
             echo "LINK=${link}" >> $GITHUB_ENV
       
-      - name: Use link to download newest Zip
+      - name: Use link to download newest Zip with retry
         run: |
           link=${{ env.LINK }}
           mkdir -p Downloads
           cd Downloads
-          wget --no-check-certificate --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" $link
+          retries=0
+          max_retries=3
+          while [ $retries -lt $max_retries ]; do
+            wget --no-check-certificate --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" $link
+            if [ $? -eq 0 ]; then
+              break
+            fi
+            retries=$((retries+1))
+            sleep 10
+          done
 
       - name: Cache innoextract
         uses: actions/cache@v3

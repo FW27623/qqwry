@@ -16,8 +16,8 @@
 
 - 在` Github Action ` 中增加定时运行和手动运行操作
 - 使用 ` Python ` 来获取微信公众号推文发布的IP库更新链接
-- ` Github Action ` 中增加对已有同名 [` Release` ](https://github.com/FW27623/qqwry/releases) 以及[` Tags `](https://github.com/FW27623/qqwry/tags)的处理
-- ` Github Action ` 中解包完成的 `qqwy.dat` 文件，默认上传至根目录下，此外将增加哈希值校验防止重复提交
+- 在` Github Action ` 中增加对已有同名 [` Release` ](https://github.com/FW27623/qqwry/releases) 以及[` Tags `](https://github.com/FW27623/qqwry/tags)的处理
+- 在` Github Action ` 中解包 `qqwy.dat` 文件，默认上传至根目录和 Release 页面中，此外将增加哈希值校验防止重复提交
 
 # 如何使用
 

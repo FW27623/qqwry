@@ -4,11 +4,10 @@ import requests
 from bs4 import BeautifulSoup
 
 def get_link(url):
-    # 设置请求头，模拟浏览器访问
     headers = {
         'Accept-Language': 'zh-CN,zh;q=0.9,en-CN;q=0.8,en;q=0.7,zh-TW;q=0.6',
         'Cookie': 'rewardsn=; wxtokenkey=777',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
     }
 
     # 访问链接并从json中提取微信推文链接
@@ -29,7 +28,7 @@ def get_zip_url(link):
     return zip_url
 
 if __name__ == '__main__':
-    # 微信推文链接
+    # 从微信推文json数据中获得最新一期IP库的发布文章链接
     url = 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg3Mzc0NTA3NA==&action=getalbum&album_id=2329805780276838401&f=json'
 
     try:
@@ -37,7 +36,6 @@ if __name__ == '__main__':
         if link:
             zip_url = get_zip_url(link)
             if zip_url:
-                # 打印zip链接，去除['']
                 print(zip_url[0])
             else:
                 print("没有找到zip链接")

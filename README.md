@@ -34,3 +34,11 @@
 - 然后再新建两个变量 `GIT_USERNAME` 和 `GIT_EMAIL`  ，这两个填你自己的就好了，然后保存，运行 Action ，不出意外的话你应该很快就能看到最新的IP库了。
 
   <p align=center><img src="https://pic.1016.site/file/e4011db8b992a5da6a28b.png" style="zoom:50%;" /></p>
+
+# Thanks
+
+## JetBrains 开源证书支持
+
+`FW27623/qqwry` 项目一直以来都是在 JetBrains 公司旗下的 Pycharm 集成开发环境中进行开发，基于 **free JetBrains Open Source license(s)** 正版免费授权，在此表达我的谢意。
+
+<a href="https://www.jetbrains.com/?from=FW27623/qqwry" target="_blank"><img src="https://raw.githubusercontent.com/panjf2000/illustrations/master/jetbrains/jetbrains-variant-4.png" width="200" align="middle"/></a>

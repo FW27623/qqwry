@@ -158,3 +158,11 @@ jobs:
             git commit -m "Update qqwry.dat in  ${{ env.dat_date }}"
             git push
           fi
+      - name: Go to txt
+        run: |
+          link=$(python main.py)
+          if [ -z "$link" ]; then
+            echo "No link found, exiting"
+            exit 0
+          fi
+            echo "LINK=${link}" >> $GITHUB_ENV

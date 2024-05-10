@@ -13,8 +13,14 @@ def get_link(url):
     # 访问链接并从json中提取微信推文链接
     response = requests.get(url, headers=headers)
     data = json.loads(response.text)
-    link = data['getalbum_resp']['article_list'][0]['url']
-    return link
+    article_list = data['getalbum_resp']['article_list']
+
+    for article in article_list:
+        link = article['url']
+        zip_url = get_zip_url(link)
+        if zip_url:
+            return link
+    return None
 
 def get_zip_url(link):
     # 访问微信推文链接并解析网页

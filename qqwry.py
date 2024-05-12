@@ -16,10 +16,12 @@ def get_link(url):
     article_list = data['getalbum_resp']['article_list']
 
     for article in article_list:
-        link = article['url']
-        zip_url = get_zip_url(link)
-        if zip_url:
-            return link
+        title = article['title']
+        if "纯真IP库社区版更新" in title:
+            link = article['url']
+            zip_url = get_zip_url(link)
+            if zip_url:
+                return link
     return None
 
 def get_zip_url(link):
@@ -28,10 +30,13 @@ def get_zip_url(link):
     soup = BeautifulSoup(response.text, 'html.parser')
 
     # 提取文本中的zip链接，正则匹配以https://开头以.zip后缀的链接
-    content = soup.find('div', {'id': 'js_content'}).get_text()
-    zip_url = re.findall(r'https://.*?\.zip', content)
-
-    return zip_url
+    content_div = soup.find('div', {'id': 'js_content'})
+    if content_div is not None:
+        content = content_div.get_text()
+        zip_url = re.findall(r'https://.*?\.zip', content)
+        return zip_url
+    else:
+        return None
 
 if __name__ == '__main__':
     # 从微信推文json数据中获得最新一期IP库的发布文章链接

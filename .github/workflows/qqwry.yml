@@ -3,11 +3,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '55 9,15 * * *'
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'README.md'
 env:
   innoextract_version: 1.9
   arch: amd64

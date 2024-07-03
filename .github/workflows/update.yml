@@ -1,0 +1,141 @@
+name: Download and Update dat File
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '55 9,15 * * *'
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/qqwry.yml'
+ 
+permissions:
+  contents: write
+
+env:
+  FILE_URL: ${{ secrets.DAT_FILE_URL }}
+
+jobs:
+  update-dat-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Get file name and extract date
+        id: get_filename
+        run: |
+          echo "Fetching file name from URL..."
+          CONTENT_DISPOSITION=$(curl -sI "${{ env.FILE_URL }}" | grep -i 'content-disposition')
+          if [ -z "$CONTENT_DISPOSITION" ]; then
+            echo "Error: Unable to fetch Content-Disposition from URL."
+            exit 1
+          fi
+          echo "Content-Disposition header: $CONTENT_DISPOSITION"
+          FILENAME=$(echo $CONTENT_DISPOSITION | grep -o -i 'filename="[^"]*"' | sed 's/filename="//i' | sed 's/"//')
+          if [ -z "$FILENAME" ]; then
+            echo "Error: Unable to extract file name from Content-Disposition."
+            exit 1
+          fi
+          echo "Extracted file name: $FILENAME"
+          DATE_PART=$(echo $FILENAME | grep -o -E '^[0-9]{8}')
+          if [ -z "$DATE_PART" ]; then
+            echo "Error: Unable to extract date from file name."
+            exit 1
+          fi
+          echo "Extracted date part: $DATE_PART"
+          TAG_DATE=$(echo $DATE_PART | sed 's/\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)/\1-\2-\3/')
+          echo "Formatted tag date: $TAG_DATE"
+          echo "dat_date=$TAG_DATE" >> $GITHUB_ENV
+
+      - name: Download dat file
+        run: |
+          echo "Starting to download the dat file..."
+          wget -O qqwry.dat "${{ env.FILE_URL }}"
+          if [ $? -eq 0 ]; then
+            echo "File downloaded successfully."
+          else
+            echo "File download failed."
+            exit 1
+          fi
+          ls -lh qqwry.dat  
+
+      - name: Calculate new file hash
+        id: calculate_new_hash
+        run: |
+          if [ -f qqwry.dat ]; then
+            echo "Calculating hash for qqwry.dat..."
+            NEW_HASH=$(sha256sum qqwry.dat | awk '{ print $1 }')
+            echo "NEW_HASH=${NEW_HASH}" >> $GITHUB_ENV
+            echo "New file hash: ${NEW_HASH}"
+          else
+            echo "Error: qqwry.dat not found."
+            exit 1
+          fi
+
+      - name: Calculate repository file hash
+        id: calculate_repo_hash
+        run: |
+          echo "Calculating hash for the repository file..."
+          REPO_HASH=$(git show main:qqwry.dat | sha256sum | awk '{ print $1 }')
+          echo "REPO_HASH=${REPO_HASH}" >> $GITHUB_ENV
+          echo "Repository file hash: ${REPO_HASH}"
+
+      - name: Compare file hashes
+        id: compare_hashes
+        run: |
+          if [ "${{ env.NEW_HASH }}" != "${{ env.REPO_HASH }}" ]; then
+            echo "File has changed."
+            echo "FILE_CHANGED=true" >> $GITHUB_ENV
+          else
+            echo "File has not changed."
+          fi
+
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          git fetch --tags
+          TAG_EXISTS=false
+          if git rev-parse "${{ env.dat_date }}" >/dev/null 2>&1; then
+            TAG_EXISTS=true
+          fi
+          echo "TAG_EXISTS=${TAG_EXISTS}" >> $GITHUB_ENV
+
+      - name: Commit and push changes
+        if: env.FILE_CHANGED == 'true'
+        env:
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+        run: |
+          echo "Configuring Git..."
+          git config --global user.name $GIT_USERNAME
+          git config --global user.email $GIT_EMAIL
+          git add qqwry.dat
+          git commit -m "Update qqwry.dat on $(date +'%Y-%m-%d')"
+          git push origin main
+
+      - name: Create a new release
+        if: env.TAG_EXISTS == 'false'
+        uses: FW27623/release@v1
+        with:
+          commit: ${{ env.GITHUB_SHA }}
+          tag: ${{ env.dat_date }}
+          token: ${{ secrets.qqwry }}
+          artifacts: qqwry.dat
+          body: |
+           #### qqwry.dat
+
+           | Name               | Value                      |
+           | :----------------: | :------------------------: |
+           | Download link:     | https://raw.githubusercontent.com/FW27623/qqwry/main/qqwry.dat |
+           | File hash:         | qqwry.dat: ${{ env.NEW_HASH }} |
+
+           <p align="right"><code>Version: ${{ env.dat_date }} </code></p>

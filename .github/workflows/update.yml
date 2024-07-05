@@ -119,7 +119,7 @@ jobs:
           git config --global user.name $GIT_USERNAME
           git config --global user.email $GIT_EMAIL
           git add qqwry.dat
-          git commit -m "Update qqwry.dat on $(date +'%Y-%m-%d')"
+          git commit -m "Update qqwry.dat in  ${{ env.dat_date }}"
           git push origin main
 
       - name: Create a new release

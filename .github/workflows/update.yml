@@ -2,11 +2,6 @@ name: Download and Update dat File
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '55 9,15 * * *'
-  push:
-    branches:
-      - main
     paths-ignore:
       - 'README.md'
       - '.github/workflows/qqwry.yml'

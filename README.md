@@ -1,4 +1,7 @@
 # qqwry.dat [![qqwry](https://github.com/FW27623/qqwry/actions/workflows/update.yml/badge.svg)](https://github.com/FW27623/qqwry/actions/workflows/update.yml)
+
+**dat 格式官方在 2024 年 10 月份已停止维护，官方已无发布dat格式文件。**
+
 **纯真IP数据库文件，dat数据非exe安装包，使用 Github Action 定时获得最新版本的IP库文件，每天会扫描两次（17:55和23:55），当发现更新时也可以选择手动运行来获得文件。目前是基于官方授权链接自动更新，并非从公众号获取（官方公众号已更改发布方式）。**
 
 **本仓库如果有帮助到您的话可以点点 [Star⭐](https://github.com/FW27623/qqwry)支持下。**
